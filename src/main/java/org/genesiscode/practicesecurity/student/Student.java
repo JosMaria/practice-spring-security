@@ -17,4 +17,9 @@ public class Student {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Student {id=%s, name='%s'}", id, name);
+    }
 }

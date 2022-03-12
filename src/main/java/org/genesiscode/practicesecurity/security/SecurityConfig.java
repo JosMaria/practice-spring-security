@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static org.genesiscode.practicesecurity.security.UserRole.*;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -25,28 +27,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.csrf().disable()
+                .authorizeRequests()
                 .antMatchers("/").permitAll()
+                .antMatchers("/api/**").hasRole(STUDENT.name())
                 .anyRequest()
                 .authenticated()
                 .and()
                 .httpBasic();
     }
+
     @Bean
     @Override
     protected UserDetailsService userDetailsService() {
         UserDetails maria = User.builder()
                 .username("maria")
-                .password(passwordEncoder.encode("password"))
-                .roles(UserRole.STUDENT.name()) //ROLE_STUDENT
+                .password(passwordEncoder.encode("maria17"))
+                .roles(STUDENT.name()) //ROLE_STUDENT
                 .build();
 
         UserDetails jose = User.builder()
                 .username("jose")
-                .password(passwordEncoder.encode("maria17"))
-                .roles(UserRole.ADMIN.name())
+                .password(passwordEncoder.encode("jose17"))
+                .roles(ADMIN.name()) //ROLE_ADMIN
                 .build();
 
-        return new InMemoryUserDetailsManager(maria, jose);
+        UserDetails sara = User.builder()
+                .username("sara")
+                .password(passwordEncoder.encode("sara17"))
+                .roles(TRAINER.name()) //ROLE_TRAINER
+                .build();
+
+        return new InMemoryUserDetailsManager(maria, jose, sara);
     }
 }

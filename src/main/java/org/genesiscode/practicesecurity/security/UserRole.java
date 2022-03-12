@@ -9,7 +9,8 @@ import static org.genesiscode.practicesecurity.security.UserPermission.*;
 public enum UserRole {
 
     ADMIN(Sets.newHashSet(COURSE_READ, COURSE_WRITE, STUDENT_READ, STUDENT_WRITE)),
-    STUDENT(Sets.newHashSet());
+    STUDENT(Sets.newHashSet()),
+    TRAINER(Sets.newHashSet(COURSE_READ, STUDENT_READ));
 
     private final Set<UserPermission> permissions;
 
